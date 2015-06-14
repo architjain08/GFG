@@ -1,0 +1,124 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+};
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->next = NULL;
+    return temp;
+}
+
+void push(node** head,int val)
+{
+    if(*head==NULL)
+    {
+        *head = newNode(val);
+        return;
+    }
+    node *temp = newNode(val);
+    temp->next = *head;
+    *head = temp;
+}
+
+void rev(node* &head)
+{
+    if(head==NULL)return;
+    if(head->next==NULL)return;
+    node *curr = head,*prev = NULL,*nxt;
+
+    while(curr!=NULL)
+    {
+        nxt = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nxt;
+    }
+    head = prev;
+}
+void printList(struct node *head)
+{
+     while(head!=NULL)
+     {
+        printf("%d ",head->data);
+        head=head->next;
+     }
+     printf("\n");
+}
+
+void segregate(node **head)
+{
+    if((*head)==NULL||(*head)->next==NULL)return;
+
+    node dummy1,dummy2;
+    dummy1.next = NULL;
+    dummy2.next = NULL;
+
+    node *tail1 = &dummy1;
+    node *tail2 = &dummy2;
+    node *temp = *head;
+    node *hold;
+
+    while(temp!=NULL)
+    {
+        if(temp->data&1)
+        {
+           tail2->next = temp;
+           tail2 = tail2->next;
+
+        }
+        else
+        {
+           tail1->next = temp;
+           tail1 = tail1->next;
+        }
+        hold = temp;
+        temp = temp->next;
+        hold->next = NULL;
+    }
+
+    if(tail1==&dummy1)
+        *head = dummy2.next;
+    else if(tail2==&dummy2)
+        *head = dummy1.next;
+    else
+    {
+        *head = dummy1.next;
+        tail1->next = dummy2.next;
+    }
+}
+
+int main()
+{
+    struct node *head = NULL;
+
+    /* Create following linked list
+      12->15->10->11->5->6->2->3 */
+    push(&head,16);
+    push(&head,14);
+    push(&head,12);
+    push(&head,10);
+    push(&head,8);
+    push(&head,6);
+    push(&head,4);
+    push(&head,2);
+
+    printf("Given Linked List: ");
+    printList(head);
+
+    segregate(&head);
+    printf("\nModified Linked List: ");
+    printList(head);
+
+    getchar();
+    return 0;
+}
+
+
+
