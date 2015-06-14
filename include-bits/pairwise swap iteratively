@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+};
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->next = NULL;
+    return temp;
+}
+
+void push(node **head,int v)
+{
+    if(*head==NULL)
+    {
+        *head = newNode(v);
+        return;
+    }
+    node *temp = newNode(v);
+    temp->next = *head;
+    *head = temp;
+}
+
+
+void swapL(node **head)
+{
+    if(*head==NULL)
+        return;
+    if((*head)->next==NULL)
+        return;
+
+    node *temp = *head,*store;
+    push(head,-1);//adding a dummy node in the start
+
+    node *prev = *head;
+    while(temp!=NULL&&temp->next!=NULL)
+    {
+        prev->next = temp->next;
+        prev = temp;
+        store = temp->next->next;
+        temp->next->next = temp;
+        temp->next = store;
+        temp = store;
+    }
+    store = *head;
+    *head = (*head)->next;
+    delete(store);
+
+}
+
+void printList(struct node *node)
+{
+    while(node != NULL)
+    {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+}
+int main()
+{
+    struct node *start = NULL;
+
+    /* The constructed linked list is:
+     1->2->3->4->5->6->7 */
+    push(&start, 7);
+    push(&start, 6);
+    push(&start, 5);
+    push(&start, 4);
+    push(&start, 3);
+    push(&start, 2);
+    push(&start, 1);
+
+    printf("\n Linked list before calling  pairWiseSwap() ");
+    printList(start);
+
+    swapL(&start);
+
+    printf("\n Linked list after calling  pairWiseSwap() ");
+    printList(start);
+
+    getchar();
+    return 0;
+}
