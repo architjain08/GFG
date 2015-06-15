@@ -1,0 +1,53 @@
+class Solution {
+public:
+
+    int **dp;
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        
+        int rows = matrix.size();
+        if(rows==0)
+        return 0; 
+        
+        int cols = matrix[0].size();
+        if(cols==0)
+        return 0;
+        
+        dp=  new int*[rows+1];
+        
+        for(int i=0;i<=rows;i++)
+            dp[i] = new int[cols+1];
+        
+        
+        for(int  i =0;i<rows;i++)
+        {
+            for(int j = 0;j<cols;j++)
+            {
+                if(j==0)
+                dp[i][j] = matrix[i][j]-'0';
+                else
+                dp[i][j] = dp[i][j-1] + matrix[i][j]-'0';
+            }
+        }
+        
+        int result = INT_MIN;
+        for(int  i =0;i<cols;i++)
+        {
+            for(int j = i;j<cols;j++)
+            {
+                int maxEnding  = dp[0][j] - dp[0][i] + (matrix[0][i]-'0'); 
+                if(maxEnding>result)
+                result = maxEnding;
+                
+                for(int k =1;k<rows;k++)
+                {
+                    int x = dp[k][j] -dp[k][i] + matrix[k][i]-'0';
+                    maxEnding = max(x,x + maxEnding);
+                    
+                    if(maxEnding>result)
+                    result = maxEnding;
+                }
+            }
+        }
+        return result;
+    }
+};
