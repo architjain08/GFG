@@ -1,0 +1,122 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+struct node
+{
+    int data;
+    node *next;
+    node *prev;
+};
+
+node *newNode(int v)
+{
+    node *temp = new node;
+    temp->data = v;
+    temp->prev = NULL;
+    temp->next = NULL;
+    return temp;
+}
+
+node* insert(node* root, int key)
+{
+    if (root == NULL)
+       return newNode(key);
+    if (root->data > key)
+       root->prev = insert(root->prev, key);
+    else
+       root->next = insert(root->next, key);
+    return root;
+}
+
+void convertBSTtoDLL(node *root,node **head,node **tail)
+{
+    if(root==NULL)
+        return;
+
+    if(root->prev!=NULL)
+    {
+        convertBSTtoDLL(root->prev,head,tail);
+        (*tail)->next = root;
+        root->prev = *tail;
+    }
+    else
+    {
+        *head = root;
+        (*head)->prev = NULL;
+    }
+
+    node *temp = NULL;
+    if(root->next!=NULL){
+
+    convertBSTtoDLL(root->next,&temp,tail);
+
+    root->next = temp;
+    (temp)->prev = root;
+    }
+    else
+    {
+        *tail = root;
+        (*tail)->next = NULL;
+    }
+}
+
+
+bool check(node *head,node *tail,int sum)
+{
+    if(head==NULL||tail==NULL)
+        return false;
+    while(head!=tail)
+    {
+        int s = head->data + tail->data;
+
+        if(sum==s)
+            return true;
+        else if(s<sum)
+            head = head->next;
+        else
+            tail = tail->prev;
+    }
+    return false;
+}
+
+bool isTripletPresent(node *head,node *tail)
+{
+    if(head==NULL)
+        return false;
+    while(head!=NULL&&head->next!=NULL)
+    {
+        if(check(head->next,tail,(-1)*head->data))
+            return true;
+        head=  head->next;
+    }
+    return false;
+}
+
+bool result(node *root)
+{
+    if(root==NULL)return false;
+
+    node *head = NULL,*tail =NULL;
+    convertBSTtoDLL(root,&head,&tail);
+
+    return isTripletPresent(head,tail);
+}
+
+int main()
+{
+    node* root = NULL;
+
+
+    root = insert(root, 6);
+    root = insert(root, -13);
+    root = insert(root, 14);
+    root = insert(root, -8);
+    root = insert(root, 15);
+    root = insert(root, 13);
+    root = insert(root, 7);
+
+    cout<<result(root);
+
+    return 0;
+}
