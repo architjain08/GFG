@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool isValidBST(TreeNode *root) {
+
+        long x = LONG_MIN,y = LONG_MAX;
+        return valid(root, x, y);
+    }
+
+    bool valid(TreeNode* node, long int &minVal, long int &maxVal) {
+
+        if(node ==NULL)
+            return 1;
+        if(node->left==NULL&&node->right==NULL)
+        {
+            minVal = maxVal = node->val;
+            return 1;
+        }
+        long mx1 = LONG_MIN,mx2 = LONG_MIN,mn1 = LONG_MAX,mn2 = LONG_MAX;
+
+        if(valid(node->left,mn1,mx1)==0)
+        return false;
+
+        if(valid(node->right,mn2,mx2)==0)
+        return false;
+
+        minVal = min(mn1,min(mn2,(long)node->val));
+        maxVal = max(mx1,max(mx2,(long)node->val));
+
+        //cout<<mx1<<" "<<mn2<<endl;
+        if(node->val>mx1&&node->val<mn2)
+        return true;
+        else
+        return false;
+    }
+};
