@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define MAX 105
+
+int a[MAX][MAX];
+ int r,c;
+
+int valid(int i,int j)
+{
+    if(i>=0&&j>=0&&i<r&&j<c)
+        return true;
+    else
+        return false;
+}
+
+
+int main()
+{
+
+    cin>>r>>c;
+    for(int i=0;i<r;i++)
+        for(int j = 0;j<c;j++)
+         cin>>a[i][j];
+
+    int i = 0, j =c-1;
+
+    int count = 0;
+    int row = 0;
+
+    while(i<r&&j>=0)
+    {
+        //cout<<a[i][j]<<" ";
+        if(a[i][j])
+        {
+            count++;
+            row = i;
+            if(a[i][j-1])
+                j--;
+            else
+                i++;
+        }
+        else
+            i++;
+    }
+    cout<<row<<endl;
+
+
+    return 0;
+}
