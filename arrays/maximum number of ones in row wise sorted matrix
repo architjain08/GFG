@@ -7,15 +7,6 @@ using namespace std;
 int a[MAX][MAX];
  int r,c;
 
-int valid(int i,int j)
-{
-    if(i>=0&&j>=0&&i<r&&j<c)
-        return true;
-    else
-        return false;
-}
-
-
 int main()
 {
 
