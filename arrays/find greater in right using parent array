@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[105];
+int result[105];
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    for(int i=0;i<n;i++)
+        cin>>a[i];
+
+    result[n-1] = -1;
+    for(int i = n-2;i>=0;i--)
+    {
+        if(a[i]<a[i+1])
+            result[i] = i+1;
+        else
+        {
+            int k = i+1;
+            while(result[k]!=-1&&a[result[k]]<=a[i])
+                k = result[k];
+            if(k==-1)
+            result[i] = -1;
+            else
+            result[i] = result[k];
+        }
+    }
+
+    for(int i = 0;i<n;i++)
+        if(result[i]!=-1)
+        cout<<a[result[i]]<<" ";
+        else
+        cout<<"-1 ";
+
+    cout<<endl;
+    return 0;
+}
