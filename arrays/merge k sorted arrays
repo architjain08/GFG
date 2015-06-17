@@ -1,0 +1,68 @@
+//http://www.geeksforgeeks.org/merge-k-sorted-arrays/
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int i;
+    int val;
+};
+
+struct compare
+{
+    bool operator()(node &a,node &b)
+    {
+        return a.val>b.val;
+    }
+};
+
+#define MAX 105
+int idx[MAX];
+int size[MAX];
+int maxsize[MAX];
+int a[MAX][MAX];
+
+int main()
+{
+    int n,c,total = 0;
+    cin>>n;
+
+    for(int i = 0;i<n;i++)
+    {
+        cin>>c;
+        maxsize[i] = c;
+
+        total = total + c;
+
+        for(int j = 0;j<c;j++)
+            cin>>a[i][j];
+    }
+
+    priority_queue<node,vector<node>,compare> pq;
+
+    for(int i =0;i<n;i++)
+    {
+        pq.push((node){i,a[i][0]});
+        size[i]++;
+    }
+
+    while(total>0)
+    {
+        node top = pq.top();
+        pq.pop();
+
+        cout<<top.val<<" ";
+        total--;
+
+        if(size[top.i]!=maxsize[top.i])
+        {
+            pq.push((node){top.i,a[top.i][size[top.i]]});
+            size[top.i]++;
+        }
+    }
+
+    cout<<endl;
+
+
+    return 0;
+}
