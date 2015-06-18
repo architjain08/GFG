@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[105];
+
+int main()
+{
+    int n,k;
+    cin>>n;
+
+    for(int i = 0;i<n;i++)
+        cin>>a[i];
+
+    cin>>k;
+    for(int i = 0;i<n;i++)
+    {
+        int actual = a[i]%k;
+        a[actual] += k;
+    }
+
+    int result = 0;
+    int count = a[0]/k;
+
+    for(int i =1;i<n;i++)
+    {
+        int temp = a[i]/k;
+        if(temp>count)
+        {
+            count = temp;
+            result = i;
+        }
+    }
+
+    cout<<result<<endl;
+    return 0;
+}
