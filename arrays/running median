@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define lld long long
+struct compare1
+{
+    bool operator()(lld &a,lld &b)
+    {
+        return (a>b)?true:false;
+    }
+};
+
+struct compare2
+{
+    bool operator()(lld &a,lld &b)
+    {
+        return (a<b)?true:false;
+    }
+};
+
+int main()
+{
+    lld t,n;
+    scanf("%lld",&t);
+
+
+    while(t--)
+    {
+        priority_queue<lld,vector<lld>,compare1> minHeap;
+        priority_queue<lld,vector<lld>,compare2> maxHeap;
+
+        while(true)
+        {
+            scanf("%lld",&n);
+            if(n==0)
+                break;
+
+            if(n==-1)
+            {
+                if(minHeap.size()==maxHeap.size())
+                {
+                    printf("%lld\n",maxHeap.top());
+                    maxHeap.pop();
+                }
+                else
+                {
+                    if(minHeap.size()<maxHeap.size())
+                    {
+                        printf("%lld\n",maxHeap.top());
+                        maxHeap.pop();
+                    }
+                    else
+                    {
+                        printf("%lld\n",minHeap.top());
+                        minHeap.pop();
+                    }
+                }
+            }
+            else
+            {
+                if(maxHeap.size()==0&&minHeap.size()==0)
+                    maxHeap.push(n);
+                else
+                {
+                    if(maxHeap.top()>n)
+                        maxHeap.push(n);
+                    else
+                        minHeap.push(n);
+
+                    if(minHeap.size()!=maxHeap.size())
+                    {
+                        int temp = maxHeap.size() - minHeap.size();
+                        if(temp==2)
+                        {
+                            minHeap.push(maxHeap.top());
+                            maxHeap.pop();
+                        }
+                        else if(temp==-2)
+                        {
+                            maxHeap.push(minHeap.top());
+                            minHeap.pop();
+                        }
+                        else{}
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
