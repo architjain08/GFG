@@ -1,0 +1,119 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int dx[] = {1,0,-1,0};
+int dy[] = {0,-1,0,1};
+
+int a[105][105];
+int r,c;
+
+int valid(int i,int j)
+{
+    if(i>=0&&j>=0&&i<r&&j<c)
+        return true;
+    else
+        return false;
+}
+
+int dfs(int i,int j)
+{
+    if(valid(i,j)==false)
+        return 0;
+
+    if(a[i][j]==1)
+        return 1;
+
+    a[i][j] = 2;
+
+    int result = 1;
+    for(int k = 0;k<4;k++)
+    {
+        int nx = i + dx[k];
+        int ny = j + dy[k];
+
+        if(valid(nx,ny)&&a[nx][ny]!=2)
+        result = result&dfs(i+dx[k],j+dy[k]);
+    }
+
+    if(result==0)
+        a[i][j]  = 0;
+    else
+        a[i][j] = 1;
+
+    return result;
+}
+
+int main()
+{
+    cin>>r>>c;
+
+    for(int i = 0;i<r;i++)
+        for(int j =0;j<c;j++)
+         cin>>a[i][j];
+
+    int flag1 = 0,flag2 =0 ;
+
+    if(a[0][0]==1)
+    {
+        flag1 = 1;
+        flag2 = 1;
+    }
+
+    for(int i = 0;i<c;i++)
+    {
+        if(a[0][i]==1)
+        {
+            flag1 = 1;
+            a[0][i] = 0;
+        }
+    }
+
+    for(int i =0;i<r;i++)
+    {
+        if(a[i][0]==1)
+        {
+            flag2 = 1;
+            a[i][0] = 0;
+        }
+    }
+
+    for(int i = 1;i<r;i++)
+    {
+        for(int j = 1;j<c;j++)
+        {
+            if(a[i][j]==1)
+            {
+                a[0][j] = 1;
+                a[i][0] = 1;
+                a[i][j] = 0;
+            }
+        }
+    }
+
+    for(int i = 1;i<r;i++)
+    {
+        for(int j = 1;j<c;j++)
+        {
+            if(a[i][0]||a[0][j])
+                a[i][j] = 1;
+        }
+    }
+
+    if(flag1==1)
+    for(int i =0;i<c;i++)
+    a[0][i] = flag1;
+
+    if(flag2==1)
+    for(int i =0;i<r;i++)
+    a[i][0] = flag2;
+
+    for(int i = 0;i<r;i++)
+    {
+        cout<<"\n";
+        for(int j = 0;j<c;j++)
+            cout<<a[i][j]<<" ";
+    }
+
+
+    return 0;
+}
