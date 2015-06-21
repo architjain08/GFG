@@ -1,0 +1,24 @@
+//atmost 2 transactions possible
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+
+        if(prices.size()==0)
+        return 0;
+
+        int n = prices.size();
+
+        int two = 0,one = 0,maxi = -prices[0],minimum = prices[0];
+
+        for(int i =1;i<n;i++)
+        {
+            two = max(two,maxi+prices[i]);
+            maxi = max(maxi,one-prices[i]);
+            one = max(one,prices[i]-minimum);
+            minimum = min(prices[i],minimum);
+        }
+
+        return two;
+    }
+};
