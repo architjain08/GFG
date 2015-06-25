@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    char data;
+    node *left,*right;
+};
+
+
+node *newNode(char d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->left = temp->right = NULL;
+}
+
+
+void transform(node *root)
+{
+    queue<node *> aux,q;
+    stack<char> s;
+
+    int level = 0;
+
+    q.push(root);
+    q.push(NULL);
+
+
+    while(!q.empty())
+    {
+        node *top = q.front();
+        q.pop();
+
+        if(top==NULL)
+        {
+            level++;
+
+            while(!s.empty()&&!aux.empty())
+            {
+                node *temp = aux.front();
+
+                temp->data = s.top();
+                s.pop();
+                aux.pop();
+
+            }
+
+            if(q.size()!=0)
+            q.push(NULL);
+            continue;
+        }
+
+        if(level%2==1)
+        {
+            aux.push(top);
+            s.push(top->data);
+        }
+
+        if(top->left!=NULL)
+        q.push(top->left);
+
+        if(top->right!=NULL)
+        q.push(top->right);
+    }
+
+}
+
+void printInorder(struct node *root)
+{
+    if (root == NULL) return;
+    printInorder(root->left);
+    cout << root->data << " ";
+    printInorder(root->right);
+}
+
+int main()
+{
+    struct node *root = newNode('a');
+    root->left = newNode('b');
+    root->right = newNode('c');
+    root->left->left = newNode('d');
+    root->left->right = newNode('e');
+    root->right->left = newNode('f');
+    root->right->right = newNode('g');
+    root->left->left->left = newNode('h');
+    root->left->left->right = newNode('i');
+    root->left->right->left = newNode('j');
+    root->left->right->right = newNode('k');
+    root->right->left->left = newNode('l');
+    root->right->left->right = newNode('m');
+    root->right->right->left = newNode('n');
+    root->right->right->right = newNode('o');
+
+    cout << "Inorder Traversal of given tree\n";
+    printInorder(root);
+
+    transform(root);
+
+    cout << "\n\nInorder Traversal of modified tree\n";
+    printInorder(root);
+
+    return 0;
+}
