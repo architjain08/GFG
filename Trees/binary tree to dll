@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *left;
+    node *right;
+};
+
+
+node *newNode(int d)
+{
+    node *temp  =new node;
+    temp->data = d;
+    temp->left = NULL;
+    temp->right=NULL;
+    return temp;
+}
+
+
+node* convertToDLL(node *root,node **last)
+{
+    if(root==NULL)
+    {
+        *last = NULL;
+        return NULL;
+    }
+
+    if(root->left==NULL&&root->right==NULL)
+    {
+
+        *last = root;
+        return root;
+    }
+
+    node *temp1=NULL,*temp2=NULL;
+    node *x = convertToDLL(root->left,&temp1);
+    node *y = convertToDLL(root->right,&temp2);
+
+    if(x==NULL&&y==NULL)
+    {
+        root->left==NULL;
+        root->right==NULL;
+        *last = root;
+        return root;
+    }
+    else if(x==NULL)
+    {
+        root->right =y;
+        y->left = root;
+        root->left = NULL;
+        *last = temp2;
+        return root;
+    }
+    else if(y==NULL)
+    {
+        temp1->right = root;
+        root->right = NULL;
+        root->left = temp1;
+        *last = root;
+        return x;
+    }
+    else
+    {
+        temp1->right = root;
+        root->right = y;
+        y->left = root;
+        root->left = temp1;
+        *last = temp2;
+        return x;
+    }
+}
+
+/* Function to print nodes in a given doubly linked list */
+void printList(node *node)
+{
+    while (node!=NULL)
+    {
+        printf("%d ", node->data);
+        node = node->right;
+    }
+}
+
+/* Driver program to test above functions*/
+int main()
+{
+    // Let us create the tree shown in above diagram
+    node *root        = newNode(10);
+    root->left        = newNode(12);
+    root->left->left       = newNode(15);
+    root->left->left->left  = newNode(25);
+    root->left->left->left->left = newNode(30);
+    root->left->left->left->left->left = newNode(36);
+
+    node *temp = NULL;
+    // Convert to DLL
+    node *head = convertToDLL(root,&temp);
+
+    // Print the converted list
+    printList(head);
+
+    return 0;
+}
