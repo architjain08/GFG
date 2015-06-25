@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    bool isThread;
+
+    node *left;
+    node *right;
+};
+
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->isThread = false;
+    temp->left  = temp->right = NULL;
+    return temp;
+}
+
+void insert(node **head,node **tail,node *dummy)
+{
+    if(*head==NULL)
+    {
+        *head = dummy;
+        *tail = dummy;
+        (*head)->left = NULL;
+        return;
+    }
+    (*tail)->left = dummy;
+    *tail = dummy;
+    (*tail)->left = NULL;
+}
+
+ node *transform(node *root)
+{
+    node *head = NULL; //dummy node
+    node *tail = NULL;
+
+    queue<node *> q;
+    q.push(root);
+    q.push(NULL);
+
+    node *prev = NULL;
+
+    while(!q.empty())
+    {
+        node *top = q.front();
+        q.pop();
+
+        if(prev==NULL)
+        prev = top;
+
+        if(top==NULL)
+        {
+            insert(&head,&tail,prev);
+            prev = NULL;
+
+            if(q.size()!=0)
+            q.push(NULL);
+            continue;
+        }
+
+        if(top->left!=NULL)
+        q.push(top->left);
+
+        if(top->right!=NULL)
+        q.push(top->right);
+
+        top->right = q.front();
+        top->left = NULL;
+    }
+}
+void downRightTraversal(node *root)
+{
+    if (root != NULL)
+    {
+        cout << root->data << " ";
+        downRightTraversal(root->right);
+        downRightTraversal(root->left);
+    }
+}
+
+int main()
+{
+    // Let us create binary tree shown in above diagram
+    node *root = newNode(1);
+    root->left = newNode(2);
+    root->right = newNode(3);
+    root->right->left = newNode(4);
+    root->right->right = newNode(5);
+    root->right->left->left = newNode(6);
+    root->right->right->left = newNode(7);
+    root->right->right->right = newNode(8);
+
+    transform(root);
+
+    cout << "Traversal of the tree converted to down-right form\n";
+    downRightTraversal(root);
+
+    return 0;
+}
