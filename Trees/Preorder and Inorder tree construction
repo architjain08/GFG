@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *left;
+    node *right;
+};
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+char I[] = {'D', 'B', 'E', 'A', 'F', 'C'};
+char P[] = {'A', 'B', 'D', 'E', 'C', 'F'};
+
+node *convert(int &itr,int start,int end)
+{
+    if(start>end)return NULL;
+
+    if(start==end)
+    return newNode(P[itr++]);
+
+    int pos = -1;
+    for(int k = start;k<=end;k++)
+    {
+        if(I[k]==P[itr])
+        {
+            pos = k;
+            break;
+        }
+    }
+    node *temp = newNode(P[itr++]);
+    temp->left = convert(itr,start,pos-1);
+    temp->right = convert(itr,pos+1,end);
+    return temp;
+}
+
+void printInorder(struct node* node)
+{
+  if (node == NULL)
+     return;
+
+  printInorder(node->left);
+  printf("%c ", node->data);
+  printInorder(node->right);
+}
+
+int main()
+{
+
+  int len = sizeof(I)/sizeof(I[0]);
+  int temp = 0;
+
+  struct node *root = convert(temp,0,len-1);
+
+  /* Let us test the built tree by printing Insorder traversal */
+  printf("\n Inorder traversal of the constructed tree is \n");
+  printInorder(root);
+  getchar();
+}
