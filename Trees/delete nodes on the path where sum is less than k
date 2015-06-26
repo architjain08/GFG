@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *left;
+    node *right;
+};
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->left = NULL;
+    temp->right = NULL;
+    temp->data = d;
+    return temp;
+}
+
+node *del(node *root,int k)
+{
+    if(root==NULL)return NULL;
+
+    root->left = del(root->left,k - root->data);
+    root->right =del(root->right,k - root->data);
+
+    if(root->left==NULL && root->right==NULL)
+    {
+        if(root->data < k)
+        {
+            delete(root);
+            return NULL;
+        }
+    }
+    return root;
+}
+
+
+void print(struct node *root)
+{
+    if (root != NULL)
+    {
+        print(root->left);
+        printf("%d ",root->data);
+        print(root->right);
+    }
+}
+
+int main()
+{
+    int k = 45;
+    struct node *root = newNode(1);
+    root->left = newNode(2);
+    root->right = newNode(3);
+    root->left->left = newNode(4);
+    root->left->right = newNode(5);
+    root->right->left = newNode(6);
+    root->right->right = newNode(7);
+    root->left->left->left = newNode(8);
+    root->left->left->right = newNode(9);
+    root->left->right->left = newNode(12);
+    root->right->right->left = newNode(10);
+    root->right->right->left->right = newNode(11);
+    root->left->left->right->left = newNode(13);
+    root->left->left->right->right = newNode(14);
+    root->left->left->right->right->left = newNode(15);
+
+    printf("Tree before truncation\n");
+    print(root);
+
+    root = del(root, 45); // k is 45
+
+    printf("\n\nTree after truncation\n");
+    print(root);
+
+    return 0;
+}
