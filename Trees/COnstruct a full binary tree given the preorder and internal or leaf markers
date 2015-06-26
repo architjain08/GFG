@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *left;
+    node *right;
+};
+
+node *newNode(int d)
+{
+    node *temp = new node;
+    temp->data = d;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+int pre[] = {10, 30, 20, 5, 15};
+char preLN[] = {'N', 'N', 'L', 'L', 'L'};
+int n = sizeof(pre)/sizeof(pre[0]);
+
+node *construct(int &i)
+{
+    if(i==n)
+    return NULL;
+
+    if(preLN[i]=='L')
+        return newNode(pre[i++]);
+
+    node *temp = newNode(pre[i++]);
+    temp->left = construct(i);
+    temp->right = construct(i);
+
+    return temp;
+}
+
+void printInorder(struct node* node)
+{
+  if (node == NULL)
+     return;
+
+  printInorder(node->left);
+  printf("%d ", node->data);
+  printInorder(node->right);
+}
+
+int main()
+{
+
+
+  int temp = 0;
+
+  struct node *root = construct(temp);
+
+  /* Let us test the built tree by printing Insorder traversal */
+  printf("\n Inorder traversal of the constructed tree is \n");
+  printInorder(root);
+  getchar();
+}
