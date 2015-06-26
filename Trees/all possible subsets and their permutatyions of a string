@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+set<string> result;
+void insertAll(int i,string temp)
+{
+    if(i==temp.size())
+    {
+        result.insert(temp);
+        return;
+    }
+
+    for(int k = i;k<temp.size();k++)
+    {
+        swap(temp[k],temp[i]);
+        insertAll(i+1,temp);
+        swap(temp[k],temp[i]);
+    }
+}
+
+int main()
+{
+    string s;
+    cin>>s;
+
+    int len = s.size();
+
+    for(int i = 0;i<(1<<len);i++)
+    {
+        string temp = "";
+        for(int j = 0;j<i;j++)
+        {
+            if(i&(1<<j))
+            temp = temp + s[j];
+        }
+        result.insert(temp);
+    }
+
+
+    for(set<string>::iterator it = result.begin();it!=result.end();it++)
+    {
+        string temp = *it;
+        insertAll(0,temp);
+    }
+    for(set<string>::iterator it = result.begin();it!=result.end();it++)
+    {
+        cout<<*it<<endl;
+    }
+
+
+    return 0;
+}
