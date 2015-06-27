@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+string divide(string a,int d,int len)
+{
+    int num = 0;
+    string result = "";
+    for(int i = 0;i<a.size();i++)
+    {
+        num = num*10 +(a[i]-'0');
+        if(num<d)
+            result = result + '0';
+        else
+        {
+            result = result + char(num/d+'0');
+            num = num%d;
+        }
+    }
+
+    int rem = num;
+
+    if(rem!=0)
+    result = result+".";
+    else
+    return result;
+
+    while(len>0)
+    {
+        num = num*10;
+        if(num<d)
+            result = result + '0';
+        else
+        {
+            result = result + char(num/d+'0');
+            num = num%d;
+        }
+        len--;
+    }
+
+    return result;
+}
+
+int main()
+{
+    cout<<divide("1",186,55)<<endl;
+    return 0;
+}
